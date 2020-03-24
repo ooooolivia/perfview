@@ -615,10 +615,14 @@ declare -a DotNETRuntimePrivate_DynamicTypeUsageKeyword=(
     DotNETRuntimePrivate:ObjectVariantMarshallingToManaged
 )
 
-declare -a LTTng_Kernel_ProcessLifetime=(
+declare -a LTTng_Kernel_ProcessLifetimeKeyword=(
     sched_process_exec
     sched_process_exit
 )
+
+declare -a LTTng_Kernel_ContextSwitchKeyword={
+    sched_switch
+}
 
 ######################################
 ## Global Variables
@@ -1339,11 +1343,13 @@ SetupLTTngSession()
         elif [ "$events" == "threading" ]
         then
             EnableLTTngEvents ${DotNETRuntime_ThreadingKeyword[@]}
-        elif [ "$events" == "processlifetime" ]
-        then
-            # Setup kernel events. 
-            # TODO: enable triggers of different kernel events, instead of a default set of kernel events
-            EnableLTTngKernelEvents ${LTTng_Kernel_ProcessLifetime[@]}
+        else
+            # Enable events defined by keywords
+            for (( i in $events ))
+            do
+                echo $i
+            done
+            exit 0
         fi
     fi
 }
