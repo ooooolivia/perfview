@@ -620,9 +620,9 @@ declare -a LTTng_Kernel_ProcessLifetimeKeyword=(
     sched_process_exit
 )
 
-declare -a LTTng_Kernel_ContextSwitchKeyword={
+declare -a LTTng_Kernel_ContextSwitchKeyword=(
     sched_switch
-}
+)
 
 ######################################
 ## Global Variables
