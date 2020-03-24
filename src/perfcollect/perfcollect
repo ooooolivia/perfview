@@ -1343,11 +1343,11 @@ SetupLTTngSession()
         elif [ "$events" == "threading" ]
         then
             EnableLTTngEvents ${DotNETRuntime_ThreadingKeyword[@]}
-        else
+        else     
             # Enable events defined by keywords
-            for (( i in $events ))
-            do
-                echo $i
+            for (( i=0; i<${#events[@]}; i++ ))
+            do 
+                echo $events[$i]
             done
             exit 0
         fi
