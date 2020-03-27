@@ -1367,7 +1367,7 @@ SetupLTTngSession()
                     EnableLTTngKernelEvents ${keywords[@]}
                 else
                     echo keywords: ${keywords[@]}
-                    #EnableLTTngEvents ${keywords[@]}
+                    EnableLTTngEvents ${keywords[@]}
                 fi
             done
             exit 0
@@ -1984,7 +1984,7 @@ then
 fi
 
 # Ensure prerequisites are installed.
-# EnsurePrereqsInstalled
+EnsurePrereqsInstalled
 
 # Initialize the log.
 if [ "$1" != "stop" ]
