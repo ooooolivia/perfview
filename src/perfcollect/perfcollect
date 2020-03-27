@@ -1350,11 +1350,9 @@ SetupLTTngSession()
         else     
             # Enable other keywords
             events=(${events//","/" "})
-            echo events: ${events[@]}
             for (( i=0; i<${#events[@]}; i++ ))
             do 
                 local event=${events[$i]}
-                echo current event: $event
                 if [ "${!event}" == "" ]
                 then
                     echo Invalid keyword $event, skipped...
@@ -1363,10 +1361,8 @@ SetupLTTngSession()
                 local -a 'keywords=("${'"$event"'[@]}")'
                 if [ "${event#"LTTng_Kernel_"}" != "$event" ]
                 then 
-                    echo keywords: ${keywords[@]}
                     EnableLTTngKernelEvents ${keywords[@]}
                 else
-                    echo keywords: ${keywords[@]}
                     EnableLTTngEvents ${keywords[@]}
                 fi
             done
