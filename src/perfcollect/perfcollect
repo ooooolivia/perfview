@@ -1205,8 +1205,12 @@ ProcessArguments()
         then
             local value=${args[$i+1]}
 
-            # Convert the value to lower case.
-            value=`echo $value | tr '[:upper:]' '[:lower:]'`
+            # Keep the cases of '-events' value to match keyword variables
+            if [ "-events" != "$arg" ]
+            then
+                # Convert the value to lower case.
+                value=`echo $value | tr '[:upper:]' '[:lower:]'`
+            fi
         fi
 
         # Match the arg to a known value.
@@ -1344,10 +1348,27 @@ SetupLTTngSession()
         then
             EnableLTTngEvents ${DotNETRuntime_ThreadingKeyword[@]}
         else     
-            # Enable events defined by keywords
+            # Enable other keywords
+            events=(${events//","/" "})
+            echo events: ${events[@]}
             for (( i=0; i<${#events[@]}; i++ ))
             do 
-                echo $events[$i]
+                local event=${events[$i]}
+                echo current event: $event
+                if [ "${!event}" == "" ]
+                then
+                    echo Invalid keyword $event, skipped...
+                    continue
+                fi
+                local -a 'keywords=("${'"$event"'[@]}")'
+                if [ "${event#"LTTng_Kernel_"}" != "$event" ]
+                then 
+                    echo keywords: ${keywords[@]}
+                    EnableLTTngKernelEvents ${keywords[@]}
+                else
+                    echo keywords: ${keywords[@]}
+                    #EnableLTTngEvents ${keywords[@]}
+                fi
             done
             exit 0
         fi
@@ -1963,7 +1984,7 @@ then
 fi
 
 # Ensure prerequisites are installed.
-EnsurePrereqsInstalled
+# EnsurePrereqsInstalled
 
 # Initialize the log.
 if [ "$1" != "stop" ]
